@@ -1,0 +1,28 @@
+kind: Deployment
+apiVersion: apps/v1
+
+metadata:
+  name: stable-app-deployment
+  labels:
+    app: stable-app-deployment
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: stable-app-deployment
+  template:
+    metadata:
+      labels:
+        app: stable-app-deployment
+    spec:
+      containers:
+        - name: pomodoro-app-container
+          image: ikramsyed/pomodoro-app-canary-deployment
+          ports:
+            - containerPort: 8000
+          env:
+            - name: APP_LABEL
+              value: "myapp-stable"
+            - name: FAIL_MODE
+              value: "false" 
