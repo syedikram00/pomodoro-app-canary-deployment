@@ -1,0 +1,28 @@
+kind: Deployment
+apiVersion: apps/v1
+
+metadata:
+  name: canary-app-deployment
+  labels:
+    app: canary-app-deployment
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: canary-app-deployment
+  template:
+    metadata:
+      labels:
+        app: canary-app-deployment
+    spec:
+      containers:
+        - name: pomodoro-app-container
+          image: ikramsyed/pomodoro-app-canary-deployment
+          ports:
+            - containerPort: 8000
+          env:
+            - name: APP_LABEL
+              value: "myapp-canary"
+            - name: FAIL_MODE
+              value: "false" 
