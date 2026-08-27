@@ -2,11 +2,14 @@ kind: Service
 apiVersion: v1
 metadata:
   name: canary-app-service
+  labels:
+    monitored: "true"
 
 spec:
   type: ClusterIP
   selector:
     app: canary-app-deployment
-  ports:  
-    - port: 8000
+  ports:
+    - name: http  
+      port: 8000
       targetPort: 8000

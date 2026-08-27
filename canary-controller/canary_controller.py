@@ -5,6 +5,7 @@ Continuously polls Prometheus for the canary deployment's error rate.
 If the error rate breaches the configured threshold over the configured
 window, scales the canary Deployment to 0 replicas (effectively pulling
 it out of rotation) and stops.
+
 """
 
 import logging
@@ -39,11 +40,8 @@ def build_error_rate_query(app_label: str, window: str) -> str:
     """
     error_rate = failed_requests / total_requests, both as rates over `window`.
 
-    sum(rate(http_requests_total{app="<app_label>", status=~"5.."}[<window>]))
-    /
-    sum(rate(http_requests_total{app="<app_label>"}[<window>]))
     """
-    failed = f'sum(rate(http_requests_total{{app="{app_label}", status=~"5.."}}[{window}]))'
+    failed = f'(sum(rate(http_requests_total{{app="{app_label}", status=~"5.."}}[{window}])) or vector(0))'
     total = f'sum(rate(http_requests_total{{app="{app_label}"}}[{window}]))'
     return f"({failed}) / ({total})"
 
@@ -69,11 +67,10 @@ def query_prometheus(prometheus_url: str, promql: str) -> float | None:
 
     result = data["data"]["result"]
     if not result:
-        # No data -- most likely zero traffic to the canary in this window.
+       
         return None
 
-    # Instant query on a scalar expression returns a single series
-    # with value = [timestamp, "string_value"]
+    
     value_str = result[0]["value"][1]
     try:
         return float(value_str)

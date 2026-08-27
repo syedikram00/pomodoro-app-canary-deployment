@@ -1,0 +1,37 @@
+kind: Deployment
+apiVersion: apps/v1
+
+metadata:
+  name: controller-deployment
+  labels:
+    app: controller-deployment
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: controller-deployment
+  template:
+    metadata:
+      labels:
+        app: controller-deployment
+    spec:
+      serviceAccountName: controller-service-account  
+      containers:
+        - name: canary-controller-container
+          image: ikramsyed/canary-controller-image
+          env:
+            - name: PROMETHEUS_URL
+              value: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
+            - name: NAMESPACE
+              value: "default"          
+            - name: CANARY_DEPLOYMENT
+              value: "canary-app-deployment"
+            - name: CANARY_APP_LABEL
+              value: "myapp-canary"
+            - name: ERROR_THRESHOLD
+              value: "1.0"              
+            - name: WINDOW
+              value: "5m"
+            - name: POLL_INTERVAL_SECONDS
+              value: "30"
