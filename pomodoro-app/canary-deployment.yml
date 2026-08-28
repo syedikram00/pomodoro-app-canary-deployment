@@ -25,4 +25,6 @@ spec:
             - name: APP_LABEL
               value: "myapp-canary"
             - name: FAIL_MODE
-              value: "false" 
+              value: "true"
+            - name: FAIL_RATE
+              value: "0.3" 

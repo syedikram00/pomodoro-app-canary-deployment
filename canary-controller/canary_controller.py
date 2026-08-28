@@ -30,7 +30,7 @@ def load_config():
         "namespace": os.environ.get("NAMESPACE", "default"),
         "canary_deployment": os.environ.get("CANARY_DEPLOYMENT", "myapp-canary"),
         "canary_app_label": os.environ.get("CANARY_APP_LABEL", "myapp-canary"),
-        "error_threshold": float(os.environ.get("ERROR_THRESHOLD", "1.0")),
+        "error_threshold": float(os.environ.get("ERROR_THRESHOLD", "0.10")),
         "window": os.environ.get("WINDOW", "5m"),
         "poll_interval_seconds": int(os.environ.get("POLL_INTERVAL_SECONDS", "30")),
     }

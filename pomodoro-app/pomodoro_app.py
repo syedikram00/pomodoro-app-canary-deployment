@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 
 APP_LABEL = os.environ.get("APP_LABEL", "myapp")
 FAIL_MODE = os.environ.get("FAIL_MODE", "false").lower() == "true"
-FAIL_RATE = float(os.environ.get("FAIL_RATE", "1.0"))
+FAIL_RATE = float(os.environ.get("FAIL_RATE", "0.3"))
 
 app = FastAPI(title="Pomodoro Timer (canary demo app)")
 
